@@ -1,4 +1,4 @@
-package ch.cern.rest.controller;
+package ch.cern.rest.controller.level0;
 
 import ch.cern.rest.Action;
 import ch.cern.rest.repository.PersonRepository;
@@ -18,11 +18,11 @@ public class PersonController {
   private PersonRepository personRepository;
 
   @RequestMapping(path = "/person", method = RequestMethod.POST)
-  public List<Person> personActions(@RequestParam Action action, @RequestBody(required = false) Person person) {
+  public List<Person> personActions(@RequestBody(required = false) Person person) {
 
-    if (action == Action.GET) {
+    if (person == null) {
       return (List<Person>) personRepository.findAll();
-    } else if (action == Action.CREATE){
+    } else {
       personRepository.save(person);
     }
 
