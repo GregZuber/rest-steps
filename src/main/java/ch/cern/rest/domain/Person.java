@@ -10,13 +10,14 @@ public class Person {
   @GeneratedValue
   private Long id;
   private String firstName;
+  private String lastName;
 
   public Person() {
   }
 
-  public Person(Long id, String firstName) {
-    this.id = id;
+  public Person(String firstName, String lastName) {
     this.firstName = firstName;
+    this.lastName = lastName;
   }
 
   public Long getId() {
@@ -25,5 +26,9 @@ public class Person {
 
   public String getFirstName() {
     return firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
   }
 }

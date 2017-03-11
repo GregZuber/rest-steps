@@ -1,13 +1,12 @@
 package ch.cern.rest.controller.level0;
 
-import ch.cern.rest.Action;
 import ch.cern.rest.repository.PersonRepository;
 import ch.cern.rest.domain.Person;
+import ch.cern.rest.request.PersonRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,13 +16,21 @@ public class PersonController {
   @Autowired
   private PersonRepository personRepository;
 
-  @RequestMapping(path = "/person", method = RequestMethod.POST)
-  public List<Person> personActions(@RequestBody(required = false) Person person) {
+  @RequestMapping(path = "/persons", method = RequestMethod.POST)
+  public List<Person> personActions(@RequestBody PersonRequest personRequest) {
 
-    if (person == null) {
+    if (personRequest == null || personRequest.getAction() == null) {
+      return null;
+    }
+
+    String action = personRequest.getAction();
+
+    if (action.equals("READ")){
       return (List<Person>) personRepository.findAll();
-    } else {
-      personRepository.save(person);
+    } else if (action.equals("CREATE") || action.equals("UPDATE")){
+      personRepository.save(personRequest.getPerson());
+    } else if (action.equals("DELETE")){
+      personRepository.delete(personRequest.getPerson());
     }
 
     return null;
